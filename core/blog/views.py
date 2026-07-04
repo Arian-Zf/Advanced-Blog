@@ -2,14 +2,18 @@ from django.shortcuts import render
 from .models import *
 from django.views.generic.base import TemplateView, RedirectView
 from django.shortcuts import get_object_or_404
+from django.views.generic import ListView
 
 
 
 
+'''def indexView
 def indexView(request):
     return render(request,'index.html')
+'''
 
 
+'''TemplateView
 class IndexView(TemplateView):
     template_name = 'index.html'
 
@@ -17,9 +21,11 @@ class IndexView(TemplateView):
         context = super().get_context_data(**kwargs)
         context["name"] = "ali"
         context["posts"] = Post.objects.all()
-        return context
+        return context'''
+
     
 
+''' RedirectView
 
 class RedirectToMaktab(RedirectView):
     url = 'https://maktabkhooneh.com'
@@ -28,3 +34,15 @@ class RedirectToMaktab(RedirectView):
         post = get_object_or_404(Post, pk=kwargs['pk'])
         print(post)
         return super().get_redirect_url(*args, **kwargs)
+'''
+
+
+
+class PostList(ListView):
+    # queryset = Post.objects.all()
+    # model = Post
+    context_object_name = 'posts'
+
+    def get_queryset(self):
+        posts = Post.objects.filter(status=True)
+        return posts
