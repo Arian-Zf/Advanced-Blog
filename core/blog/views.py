@@ -3,7 +3,8 @@ from .models import *
 from django.views.generic.base import TemplateView, RedirectView
 from django.shortcuts import get_object_or_404
 from django.views.generic import ListView,DetailView
-
+from django.views.generic.edit import FormView
+from .forms import PostForm
 
 
 
@@ -51,3 +52,12 @@ class PostList(ListView):
 
 class PostListDetail(DetailView):
     model = Post
+
+class ContactFormView(FormView):
+    template_name = "contact.html"
+    form_class = PostForm
+    success_url = "/thanks/"
+
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)
