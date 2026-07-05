@@ -2,7 +2,7 @@ from django.shortcuts import render
 from .models import *
 from django.views.generic.base import TemplateView, RedirectView
 from django.shortcuts import get_object_or_404
-from django.views.generic import ListView
+from django.views.generic import ListView,DetailView
 
 
 
@@ -48,3 +48,6 @@ class PostList(ListView):
     # def get_queryset(self):
     #     posts = Post.objects.filter(status=True)
     #     return posts
+
+class PostListDetail(DetailView):
+    model = Post
