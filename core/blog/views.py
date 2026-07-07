@@ -5,6 +5,7 @@ from django.shortcuts import get_object_or_404
 from django.views.generic import ListView,DetailView
 from django.views.generic.edit import FormView, CreateView, UpdateView, DeleteView
 from .forms import PostForm
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 
@@ -39,7 +40,7 @@ class RedirectToMaktab(RedirectView):
 
 
 
-class PostList(ListView):
+class PostList(LoginRequiredMixin,ListView):
     # queryset = Post.objects.all()
     model = Post
     context_object_name = 'posts'
