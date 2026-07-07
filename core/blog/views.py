@@ -3,7 +3,7 @@ from .models import *
 from django.views.generic.base import TemplateView, RedirectView
 from django.shortcuts import get_object_or_404
 from django.views.generic import ListView,DetailView
-from django.views.generic.edit import FormView, CreateView, UpdateView
+from django.views.generic.edit import FormView, CreateView, UpdateView, DeleteView
 from .forms import PostForm
 
 
@@ -77,5 +77,8 @@ class PostCreateView(CreateView):
 class PostEditView(UpdateView):
     model = Post
     form_class = PostForm
-    success_url = '/blog/post/'
+    success_url = '/blog/post_list/'
 
+class PostDeleteView(DeleteView):
+    model = Post
+    success_url = '/blog/post_list/'
