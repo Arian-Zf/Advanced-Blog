@@ -12,9 +12,15 @@ def postlist(request):
 
 @api_view()
 def post_detail(request,id):
-    post = Post.objects.get(id=id)
-    serializers = PostSerializer(post) # --> Dic
-    return Response(serializers.data) # --> json
+    try:
+        post = Post.objects.get(id=id)
+        serializers = PostSerializer(post) # --> Dic
+        return Response(serializers.data) # --> json
+    except Post.DoesNotExist:
+        return Response({"detail":"pose does not exist"},status=404)
+
+
+    
 
 
     
