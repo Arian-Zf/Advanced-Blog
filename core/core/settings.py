@@ -44,8 +44,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'blog.apps.BlogConfig',
     'accounts.apps.AccountsConfig',
-    'rest-framework'
-]
+    'rest_framework',
+    ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

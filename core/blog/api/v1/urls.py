@@ -6,6 +6,8 @@ from . import views
 
 urlpatterns = [
 
-    path('post/<int:pk>/delete/', views.PostDeleteView.as_view(), name='post-delete'),
+    # path('post/<int:pk>/delete/', views.PostDeleteView.as_view(), name='post-delete'),
+    path('post/<int:id>/', views.post_detail,name='post_detail')
+
     
 ]
