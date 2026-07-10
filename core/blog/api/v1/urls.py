@@ -7,7 +7,8 @@ from . import views
 urlpatterns = [
 
     # path('post/<int:pk>/delete/', views.PostDeleteView.as_view(), name='post-delete'),
-    path('post/<int:id>/', views.post_detail,name='post_detail')
+    path('postDetail/<int:id>/', views.postDetail,name='post_detail'),
+    path('post/', views.postList,name='post_detail')
 
     
 ]

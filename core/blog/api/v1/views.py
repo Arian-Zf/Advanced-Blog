@@ -6,16 +6,29 @@ from rest_framework import status
 from django.shortcuts import get_object_or_404
 
 
+# @api_view()
+# def postlist(request):
+#     posts = Post.objects.filter(status=True)
+#     serializers = PostSerializer(posts,many=True)
+#     return Response(serializers)
+
+@api_view(["GET", "POST"])
+def postList(request):
+    if request.method == "GET":
+        posts = Post.objects.filter(status=True)
+        serializer = PostSerializer(posts, many=True)
+        return Response(serializer.data)
+    elif request.method == "POST":
+        serializer = PostSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        else:
+            return Response(serializer.errors)
+
+
 @api_view()
-def postlist(request):
-    posts = Post.objects.filter(status=True)
-    serializers = PostSerializer(posts,many=True)
-    return Response(serializers)
-
-
-
-@api_view()
-def post_detail(request,id):
+def postDetail(request,id):
     post = get_object_or_404(Post,pk=id,status=True)
     serializers = PostSerializer(post) # --> Dic
     return Response(serializers.data) # --> json
