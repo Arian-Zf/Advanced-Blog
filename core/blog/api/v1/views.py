@@ -10,18 +10,29 @@ from rest_framework.generics import GenericAPIView, ListAPIView, ListCreateAPIVi
 from rest_framework import mixins
 
 
-class PostList(GenericAPIView, mixins.ListModelMixin, mixins.CreateModelMixin):
+
+
+class PostList(ListCreateAPIView):
     """getting a list of posts and creating new posts"""
     permission_classes = [IsAuthenticatedOrReadOnly]
     serializer_class = PostSerializer
     queryset = Post.objects.filter(status=True)
 
-    def get(self, request, *args, **kwargs):
-        """retrieveing a list of posts"""
-        return self.list(request, *args, **kwargs)
 
-    def post(self, request, *args, **kwargs):
-        return self.create(request, *args, **kwargs)
+
+
+# class PostList(GenericAPIView, mixins.ListModelMixin, mixins.CreateModelMixin):
+#     """getting a list of posts and creating new posts"""
+#     permission_classes = [IsAuthenticatedOrReadOnly]
+#     serializer_class = PostSerializer
+#     queryset = Post.objects.filter(status=True)
+
+#     def get(self, request, *args, **kwargs):
+#         """retrieveing a list of posts"""
+#         return self.list(request, *args, **kwargs)
+
+#     def post(self, request, *args, **kwargs):
+#         return self.create(request, *args, **kwargs)
 
 
 
