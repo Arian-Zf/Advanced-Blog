@@ -7,9 +7,11 @@ from blog.models import Post,Category
 #     title = serializers.CharField(max_length=255)
 
 class PostSerializer(serializers.ModelSerializer):
+    content = serializers.ReadOnlyField()
     class Meta:
         model = Post
         fields = ['id','author','title','content','status','created_date','published_date']
+        # read_only_fields = ['content']
 
 
 class CategorySerializer(serializers.ModelSerializer):
