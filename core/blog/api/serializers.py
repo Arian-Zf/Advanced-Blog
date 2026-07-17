@@ -15,12 +15,13 @@ class PostSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        fields = ['id','author','get_abs_url','title','content','snippet','status','created_date','published_date','relative_url']
+        fields = ['id','author','absolute_url','title','content','snippet','status','created_date','published_date','relative_url']
         # read_only_fields = ['content']
 
-    def absolute_url(self, obj):
+    def get_absolute_url(self, obj):
         request = self.context.get('request')
         return request.build_absolute_uri(obj.pk)
+    
     
     
 class CategorySerializer(serializers.ModelSerializer):
