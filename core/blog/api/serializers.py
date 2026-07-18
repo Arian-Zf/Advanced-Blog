@@ -19,8 +19,8 @@ class PostSerializer(serializers.ModelSerializer):
     # content = serializers.ReadOnlyField()
     relative_url = serializers.URLField(source='get_absolute_api_url', read_only=True)
     absolute_url = serializers.SerializerMethodField()
-    # category= serializers.SlugRelatedField(slug_field='name', queryset=Category.objects.all(),many=False)
-    category = CategorySerializer(read_only=False)
+    category= serializers.SlugRelatedField(slug_field='name', queryset=Category.objects.all(),many=False)
+    # category = CategorySerializer(read_only=False)
 
     class Meta:
         model = Post
