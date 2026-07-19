@@ -32,9 +32,10 @@ class PostSerializer(serializers.ModelSerializer):
         return request.build_absolute_uri(obj.pk)
 
 
-    # def to_representation(self, instance):
-    #     return super().to_representation(instance)
-    
+    def to_representation(self, instance):
+        rep = super().to_representation(instance)
+        rep['category'] = CategorySerializer(instance.category).data
+        return rep 
     
     
 
