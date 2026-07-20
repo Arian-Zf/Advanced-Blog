@@ -1,4 +1,4 @@
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from ..serializers import PostSerializer,CategorySerializer
 from blog.models import Post,Category
