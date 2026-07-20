@@ -11,7 +11,7 @@ from rest_framework import mixins, viewsets
 from rest_framework.decorators import action
 from .permissions import IsOwnerOrReadOnly
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework.filters import SearchFilter
+from rest_framework.filters import SearchFilter,OrderingFilter
 
 
 
@@ -23,9 +23,11 @@ class PostModelViewSet(viewsets.ModelViewSet):
     serializer_class = PostSerializer
     queryset = Post.objects.filter(status=True)
 
-    filter_backends = [DjangoFilterBackend,SearchFilter]
-    search_fields = ['=title','content']
+    filter_backends = [DjangoFilterBackend,SearchFilter,OrderingFilter]
 
+    ordering_fields = ['published_date']
+
+    search_fields = ['=title','content']
     filterset_fields = ['category','author','status']
 
     
