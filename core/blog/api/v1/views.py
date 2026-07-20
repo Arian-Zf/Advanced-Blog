@@ -10,6 +10,7 @@ from rest_framework.generics import GenericAPIView, ListAPIView, ListCreateAPIVi
 from rest_framework import mixins, viewsets
 from rest_framework.decorators import action
 from .permissions import IsOwnerOrReadOnly
+from django_filters.rest_framework import DjangoFilterBackend
 
 
 
@@ -18,10 +19,15 @@ class PostModelViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticatedOrReadOnly,IsOwnerOrReadOnly]
     serializer_class = PostSerializer
     queryset = Post.objects.filter(status=True)
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['category','author','status']
+
     
     @action(methods=["get"], detail=False)
     def get_ok(self, request):
         return Response({'detail': 'ok'})
+    
+
 
 class CategoryModelViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]

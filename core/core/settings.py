@@ -46,7 +46,8 @@ INSTALLED_APPS = [
     'blog.apps.BlogConfig',
     'accounts.apps.AccountsConfig',
     'rest_framework',
-    ]
+    'django_filters',
+]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
