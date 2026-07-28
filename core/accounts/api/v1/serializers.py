@@ -1,10 +1,22 @@
 from rest_framework import serializers
-from ...models import User
+from ...models import User, Profile
 from django.contrib.auth.password_validation import validate_password
 from django.core import exceptions
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth import authenticate
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+
+
+
+
+class ProfileSerializer(serializers.ModelSerializer):
+    email = serializers.CharField(source='user.email', read_only=True)
+
+    class Meta:
+        model = Profile
+        fields = ('id', 'email', 'first_name', 'last_name', 'image', 'description')
+        read_only_fields = ['email']
+
 
 
 
