@@ -1,9 +1,13 @@
 {% extends "mail_templated/base.tpl" %}
 
 {% block subject %}
-Hello {{ name }}
+
+account activation
+
 {% endblock %}
 
 {% block html %}
-This is an <strong>html</strong> message.
+
+{{token}}
+
 {% endblock %}

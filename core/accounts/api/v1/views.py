@@ -12,17 +12,31 @@ from django.shortcuts import get_object_or_404
 # from django.core.mail import send_mail
 from mail_templated import send_mail,EmailMessage
 from ..utils import EmailThread
+from rest_framework_simplejwt.tokens import RefreshToken  
 
 
 
 class EmailTestSend(generics.GenericAPIView):
 
     def get(self, request, *args, **kwargs):
-
-        email_obj = EmailMessage('email/hello.tpl', {'name': 'ali'}, 'admin@admin.com', to=['bigdeli.ali3@gmail.com'])
+        self.email = "bigdeli.ali3@gmail.com"
+        user_obj = get_object_or_404(User, email=self.email)
+        token = self.get_tokens_for_user(user_obj)
+        email_obj = EmailMessage('email/hello.tpl', {'token': token}, 'admin@admin.com', to=[self.email])
         EmailThread(email_obj).start()
-
         return Response("email sent")
+
+    def get_tokens_for_user(self, user):
+        refresh = RefreshToken.for_user(user)
+        return str(refresh.access_token)
+
+
+        # def get(self, request, *args, **kwargs):
+
+        #     email_obj = EmailMessage('email/hello.tpl', {'name': 'ali'}, 'admin@admin.com', to=['bigdeli.ali3@gmail.com'])
+        #     EmailThread(email_obj).start()
+
+        #     return Response("email sent")
 
 
         #1
