@@ -3,11 +3,16 @@ django >3.2,<3.3
 python-decouple
 Pillow==10.4.0
 djangorestframework
+djangorestframework-simplejwt
+
 
 # third party modules
 django-filter
 markdown
 coreapi
 drf-yasg[validation]
-djangorestframework-simplejwt
+
+
+#email third party moduls
+django-mail-templated
 

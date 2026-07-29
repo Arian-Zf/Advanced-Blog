@@ -9,21 +9,27 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.views import TokenObtainPairView
 from accounts.models import User
 from django.shortcuts import get_object_or_404
+# from django.core.mail import send_mail
+from mail_templated import send_mail
 
 
-from django.core.mail import send_mail
 
 class EmailTestSend(generics.GenericAPIView):
 
+
         def get(self, request, *args, **kwargs):
-            send_mail(
-                "Subject here",
-                "Here is the message.",
-                "from@example.com",
-                ["to@example.com"],
-                fail_silently=False,
-            )
-            return Response('test-email')
+            send_mail('email/hello.tpl', {'name': 'ali'}, 'admin@admin.com', ['bigdeli.ali3@gmail.com'])
+            return Response("email sent")
+
+        # def get(self, request, *args, **kwargs):
+        #     send_mail(
+        #         "Subject here",
+        #         "Here is the message.",
+        #         "from@example.com",
+        #         ["to@example.com"],
+        #         fail_silently=False,
+        #     )
+        #     return Response('test-email')
 
 
 
