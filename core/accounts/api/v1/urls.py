@@ -27,4 +27,7 @@ urlpatterns = [
 
     #profile
     path('profile/', views.ProfileApiView.as_view(), name="profile"),
+
+    #email
+    path('test-email',views.EmailTestSend.as_view(),name='test-email')
 ]

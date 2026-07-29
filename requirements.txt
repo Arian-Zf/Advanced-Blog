@@ -9,4 +9,5 @@ django-filter
 markdown
 coreapi
 drf-yasg[validation]
+djangorestframework-simplejwt
 
