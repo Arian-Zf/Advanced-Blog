@@ -10,17 +10,27 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from accounts.models import User
 from django.shortcuts import get_object_or_404
 # from django.core.mail import send_mail
-from mail_templated import send_mail
+from mail_templated import send_mail,EmailMessage
+from ..utils import EmailThread
 
 
 
 class EmailTestSend(generics.GenericAPIView):
 
+    def get(self, request, *args, **kwargs):
 
-        def get(self, request, *args, **kwargs):
-            send_mail('email/hello.tpl', {'name': 'ali'}, 'admin@admin.com', ['bigdeli.ali3@gmail.com'])
-            return Response("email sent")
+        email_obj = EmailMessage('email/hello.tpl', {'name': 'ali'}, 'admin@admin.com', to=['bigdeli.ali3@gmail.com'])
+        EmailThread(email_obj).start()
 
+        return Response("email sent")
+
+
+        #1
+        # def get(self, request, *args, **kwargs):
+        #     send_mail('email/hello.tpl', {'name': 'ali'}, 'admin@admin.com', ['bigdeli.ali3@gmail.com'])
+        #     return Response("email sent")
+
+        #2
         # def get(self, request, *args, **kwargs):
         #     send_mail(
         #         "Subject here",
