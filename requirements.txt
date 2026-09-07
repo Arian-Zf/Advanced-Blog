@@ -16,3 +16,5 @@ drf-yasg[validation]
 #email third party moduls
 django-mail-templated
 
+djoser
+
