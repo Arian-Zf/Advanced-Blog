@@ -21,6 +21,6 @@ urlpatterns = [
 
     path('api/v1/', include('blog.api.v1.urls')),
 
-    path('test_redis',views.test_redis,name='test_redis')
+    path('test_redis/',views.test_redis,name='test_redis')
 
 ]

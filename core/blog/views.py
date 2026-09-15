@@ -7,16 +7,13 @@ from django.views.generic.edit import FormView, CreateView, UpdateView, DeleteVi
 from .forms import PostForm
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.http import JsonResponse
-
-
+import requests
 
 
 
 def test_redis(request):
-    response = request.get('https://52f03020-5b26-411d-bf9b-2f27d684dfe6.mock.pstmn.io/delay/5?')
+    response = requests.get('https://52f03020-5b26-411d-bf9b-2f27d684dfe6.mock.pstmn.io/delay/5?')
     return JsonResponse(response.json())
-
-
 
 
 
