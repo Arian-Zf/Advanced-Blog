@@ -166,3 +166,14 @@ EMAIL_HOST = 'smtp4dev'
 EMAIL_HOST_USER = ''
 EMAIL_HOST_PASSWORD = ''
 EMAIL_PORT = 25
+
+
+
+# caching configs
+
+# CACHES = {
+#     "default": {
+#         "BACKEND": "django_redis.cache.RedisCache",
+#         "LOCATION": "redis://127.0.0.1:6379/1",
+#     }
+# }
