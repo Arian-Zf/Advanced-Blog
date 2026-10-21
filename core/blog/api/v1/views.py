@@ -1,43 +1,46 @@
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
-from ..serializers import PostSerializer,CategorySerializer
-from blog.models import Post,Category
+from ..serializers import PostSerializer, CategorySerializer
+from blog.models import Post, Category
 from rest_framework import status
 from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
-from rest_framework.permissions import IsAdminUser,IsAuthenticated,IsAuthenticatedOrReadOnly
-from rest_framework.generics import GenericAPIView, ListAPIView, ListCreateAPIView , RetrieveUpdateDestroyAPIView
+from rest_framework.permissions import (
+    IsAdminUser,
+    IsAuthenticated,
+    IsAuthenticatedOrReadOnly,
+)
+from rest_framework.generics import (
+    GenericAPIView,
+    ListAPIView,
+    ListCreateAPIView,
+    RetrieveUpdateDestroyAPIView,
+)
 from rest_framework import mixins, viewsets
 from rest_framework.decorators import action
 from .permissions import IsOwnerOrReadOnly
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework.filters import SearchFilter,OrderingFilter
+from rest_framework.filters import SearchFilter, OrderingFilter
 from .paginations import DefaultPagination
 
 
-
-
-
-
 class PostModelViewSet(viewsets.ModelViewSet):
-    permission_classes = [IsAuthenticated,IsOwnerOrReadOnly]
+    permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
     serializer_class = PostSerializer
     queryset = Post.objects.filter(status=True)
 
     pagination_class = DefaultPagination
 
-    filter_backends = [DjangoFilterBackend,SearchFilter,OrderingFilter]
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
 
-    ordering_fields = ['published_date']
+    ordering_fields = ["published_date"]
 
-    search_fields = ['=title','content']
-    filterset_fields = ['category','author','status']
+    search_fields = ["=title", "content"]
+    filterset_fields = ["category", "author", "status"]
 
-    
     @action(methods=["get"], detail=False)
     def get_ok(self, request):
-        return Response({'detail': 'ok'})
-    
+        return Response({"detail": "ok"})
 
 
 class CategoryModelViewSet(viewsets.ModelViewSet):
@@ -86,7 +89,6 @@ class CategoryModelViewSet(viewsets.ModelViewSet):
 #         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-
 # class PostList(ListCreateAPIView):
 #     """getting a list of posts and creating new posts"""
 #     permission_classes = [IsAuthenticatedOrReadOnly]
@@ -94,13 +96,11 @@ class CategoryModelViewSet(viewsets.ModelViewSet):
 #     queryset = Post.objects.filter(status=True)
 
 
-
 # class PostDetail(RetrieveUpdateDestroyAPIView):
 #     """ getting detail of the post and edit plus removing it """
 #     permission_classes = [IsAuthenticatedOrReadOnly]
 #     serializer_class = PostSerializer
 #     queryset = Post.objects.filter(status=True)
-
 
 
 # class PostDetail(GenericAPIView, mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin):
@@ -133,7 +133,6 @@ class CategoryModelViewSet(viewsets.ModelViewSet):
 #         return self.create(request, *args, **kwargs)
 
 
-
 # @api_view()
 # def postlist(request):
 #     posts = Post.objects.filter(status=True)
@@ -158,9 +157,8 @@ class CategoryModelViewSet(viewsets.ModelViewSet):
 #     post = get_object_or_404(Post,pk=id,status=True)
 #     serializers = PostSerializer(post) # --> Dic
 #     return Response(serializers.data) # --> json
-    # except Post.DoesNotExist:
-    #     return Response({"detail":"pose does not exist"},status=status.HTTP_404_NOT_FOUND)
-
+# except Post.DoesNotExist:
+#     return Response({"detail":"pose does not exist"},status=status.HTTP_404_NOT_FOUND)
 
 
 # @api_view(["GET", "PUT", "DELETE"])
@@ -179,7 +177,6 @@ class CategoryModelViewSet(viewsets.ModelViewSet):
 #         return Response({"detail":"item removed"},status=status.HTTP_204_NO_CONTENT)
 
 
-
 # class PostList(APIView):
 
 #     permission_classes = [IsAuthenticated]
@@ -195,8 +192,6 @@ class CategoryModelViewSet(viewsets.ModelViewSet):
 #         serializer.is_valid(raise_exception=True)
 #         serializer.save()
 #         return Response(serializer.data)
-
-
 
 
 # class PostDetail(APIView):
@@ -223,11 +218,3 @@ class CategoryModelViewSet(viewsets.ModelViewSet):
 #         post = get_object_or_404(Post, pk=id, status=True)
 #         post.delete()
 #         return Response({"detail": "item removed successfully"}, status=status.HTTP_204_NO_CONTENT)
-    
-    
-
-
-    
-
-
-    

@@ -9,15 +9,14 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.views import TokenObtainPairView
 from accounts.models import User
 from django.shortcuts import get_object_or_404
+
 # from django.core.mail import send_mail
-from mail_templated import send_mail,EmailMessage
+from mail_templated import send_mail, EmailMessage
 from ..utils import EmailThread
-from rest_framework_simplejwt.tokens import RefreshToken  
+from rest_framework_simplejwt.tokens import RefreshToken
 import jwt
 from jwt.exceptions import ExpiredSignatureError, InvalidSignatureError
 from django.conf import settings
-
-
 
 
 class ActivationResendApiView(generics.GenericAPIView):
@@ -26,16 +25,23 @@ class ActivationResendApiView(generics.GenericAPIView):
     def post(self, request, *args, **kwargs):
         serializer = ActivationResendSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        user_obj = serializer.validated_data['user']
+        user_obj = serializer.validated_data["user"]
         token = self.get_tokens_for_user(user_obj)
-        email_obj = EmailMessage('email/activation_email.tpl', {'token': token}, 'admin@admin.com', to=[user_obj.email])
+        email_obj = EmailMessage(
+            "email/activation_email.tpl",
+            {"token": token},
+            "admin@admin.com",
+            to=[user_obj.email],
+        )
         EmailThread(email_obj).start()
-        return Response({"details": "user activation resend successfully"}, status=status.HTTP_200_OK)
+        return Response(
+            {"details": "user activation resend successfully"},
+            status=status.HTTP_200_OK,
+        )
 
     def get_tokens_for_user(self, user):
         refresh = RefreshToken.for_user(user)
         return str(refresh.access_token)
-
 
 
 class ActivationApiView(APIView):
@@ -45,19 +51,23 @@ class ActivationApiView(APIView):
             token = jwt.decode(token, settings.SECRET_KEY, algorithms=["HS256"])
             user_id = token.get("user_id")
         except ExpiredSignatureError:
-            return Response({"details": "token has been expired"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"details": "token has been expired"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
         except InvalidSignatureError:
-            return Response({"details": "token is not valid"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"details": "token is not valid"}, status=status.HTTP_400_BAD_REQUEST
+            )
         user_obj = User.objects.get(pk=user_id)
 
         if user_obj.is_verified:
             return Response({"details": "your account has already been verified"})
         user_obj.is_verified = True
         user_obj.save()
-        return Response({"details": "your account have been verified and activated successfully"})
-
-
-
+        return Response(
+            {"details": "your account have been verified and activated successfully"}
+        )
 
 
 # class EmailTestSend(generics.GenericAPIView):
@@ -75,33 +85,29 @@ class ActivationApiView(APIView):
 #         return str(refresh.access_token)
 
 
-        # def get(self, request, *args, **kwargs):
+# def get(self, request, *args, **kwargs):
 
-        #     email_obj = EmailMessage('email/hello.tpl', {'name': 'ali'}, 'admin@admin.com', to=['bigdeli.ali3@gmail.com'])
-        #     EmailThread(email_obj).start()
+#     email_obj = EmailMessage('email/hello.tpl', {'name': 'ali'}, 'admin@admin.com', to=['bigdeli.ali3@gmail.com'])
+#     EmailThread(email_obj).start()
 
-        #     return Response("email sent")
-
-
-        #1
-        # def get(self, request, *args, **kwargs):
-        #     send_mail('email/hello.tpl', {'name': 'ali'}, 'admin@admin.com', ['bigdeli.ali3@gmail.com'])
-        #     return Response("email sent")
-
-        #2
-        # def get(self, request, *args, **kwargs):
-        #     send_mail(
-        #         "Subject here",
-        #         "Here is the message.",
-        #         "from@example.com",
-        #         ["to@example.com"],
-        #         fail_silently=False,
-        #     )
-        #     return Response('test-email')
+#     return Response("email sent")
 
 
+# 1
+# def get(self, request, *args, **kwargs):
+#     send_mail('email/hello.tpl', {'name': 'ali'}, 'admin@admin.com', ['bigdeli.ali3@gmail.com'])
+#     return Response("email sent")
 
-
+# 2
+# def get(self, request, *args, **kwargs):
+#     send_mail(
+#         "Subject here",
+#         "Here is the message.",
+#         "from@example.com",
+#         ["to@example.com"],
+#         fail_silently=False,
+#     )
+#     return Response('test-email')
 
 
 class ProfileApiView(generics.RetrieveUpdateAPIView):
@@ -112,8 +118,6 @@ class ProfileApiView(generics.RetrieveUpdateAPIView):
         queryset = self.get_queryset()
         obj = get_object_or_404(queryset, user=self.request.user)
         return obj
-
-
 
 
 class ChangePasswordApiView(generics.GenericAPIView):
@@ -131,20 +135,21 @@ class ChangePasswordApiView(generics.GenericAPIView):
         if serializer.is_valid():
             # Check old password
             if not self.object.check_password(serializer.data.get("old_password")):
-                return Response({"old_password": ["Wrong password."]}, status=status.HTTP_400_BAD_REQUEST)
+                return Response(
+                    {"old_password": ["Wrong password."]},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
             # set_password also hashes the password that the user will get
             self.object.set_password(serializer.data.get("new_password"))
             self.object.save()
-            return Response({'details': 'password changed successfully'}, status=status.HTTP_200_OK)
+            return Response(
+                {"details": "password changed successfully"}, status=status.HTTP_200_OK
+            )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-
 
 
 class CustomTokenObtainPairView(TokenObtainPairView):
     serializer_class = CustomTokenObtainPairSerializer
-
 
 
 class RegistrationApiView(generics.GenericAPIView):
@@ -154,13 +159,16 @@ class RegistrationApiView(generics.GenericAPIView):
         serializer = RegistrationSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            email = serializer.validated_data['email']
-            data = {
-                'email': email
-            }
+            email = serializer.validated_data["email"]
+            data = {"email": email}
             user_obj = get_object_or_404(User, email=email)
             token = self.get_tokens_for_user(user_obj)
-            email_obj = EmailMessage('email/activation_email.tpl', {'token':token}, 'admin@admin.com', to=[email])
+            email_obj = EmailMessage(
+                "email/activation_email.tpl",
+                {"token": token},
+                "admin@admin.com",
+                to=[email],
+            )
             EmailThread(email_obj).start()
             return Response(data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -170,21 +178,20 @@ class RegistrationApiView(generics.GenericAPIView):
         return str(refresh.access_token)
 
 
-
 class CustomObtainAuthToken(ObtainAuthToken):
     serializer_class = CustomAuthTokenSerializer
 
     def post(self, request, *args, **kwargs):
-        serializer = self.serializer_class(data=request.data,
-                                            context={'request': request})
+        serializer = self.serializer_class(
+            data=request.data, context={"request": request}
+        )
         serializer.is_valid(raise_exception=True)
-        user = serializer.validated_data['user']
+        user = serializer.validated_data["user"]
         token, created = Token.objects.get_or_create(user=user)
-        return Response({
-            'token': token.key,
-            'user_id': user.pk,
-            'email': user.email
-        }, status=status.HTTP_200_OK)
+        return Response(
+            {"token": token.key, "user_id": user.pk, "email": user.email},
+            status=status.HTTP_200_OK,
+        )
 
 
 class CustomDiscardAuthToken(APIView):

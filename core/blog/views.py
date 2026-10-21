@@ -2,7 +2,7 @@ from django.shortcuts import render
 from .models import *
 from django.views.generic.base import TemplateView, RedirectView
 from django.shortcuts import get_object_or_404
-from django.views.generic import ListView,DetailView
+from django.views.generic import ListView, DetailView
 from django.views.generic.edit import FormView, CreateView, UpdateView, DeleteView
 from .forms import PostForm
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
@@ -10,20 +10,20 @@ from django.http import JsonResponse
 import requests
 
 
-
 def test_redis(request):
-    response = requests.get('https://52f03020-5b26-411d-bf9b-2f27d684dfe6.mock.pstmn.io/delay/5?')
+    response = requests.get(
+        "https://52f03020-5b26-411d-bf9b-2f27d684dfe6.mock.pstmn.io/delay/5?"
+    )
     return JsonResponse(response.json())
 
 
-
-'''def indexView
+"""def indexView
 def indexView(request):
     return render(request,'index.html')
-'''
+"""
 
 
-'''TemplateView
+"""TemplateView
 class IndexView(TemplateView):
     template_name = 'index.html'
 
@@ -31,11 +31,10 @@ class IndexView(TemplateView):
         context = super().get_context_data(**kwargs)
         context["name"] = "ali"
         context["posts"] = Post.objects.all()
-        return context'''
+        return context"""
 
-    
 
-''' RedirectView
+""" RedirectView
 
 class RedirectToMaktab(RedirectView):
     url = 'https://maktabkhooneh.com'
@@ -44,24 +43,25 @@ class RedirectToMaktab(RedirectView):
         post = get_object_or_404(Post, pk=kwargs['pk'])
         print(post)
         return super().get_redirect_url(*args, **kwargs)
-'''
+"""
 
 
-
-class PostList(PermissionRequiredMixin,LoginRequiredMixin,ListView):
-    permission_required = 'blog.view_post'
+class PostList(PermissionRequiredMixin, LoginRequiredMixin, ListView):
+    permission_required = "blog.view_post"
     # queryset = Post.objects.all()
     model = Post
-    context_object_name = 'posts'
+    context_object_name = "posts"
     paginate_by = 2
-    ordering = '-id'
+    ordering = "-id"
 
     # def get_queryset(self):
     #     posts = Post.objects.filter(status=True)
     #     return posts
 
+
 class PostListDetail(DetailView):
     model = Post
+
 
 class ContactFormView(FormView):
     template_name = "contact.html"
@@ -71,24 +71,25 @@ class ContactFormView(FormView):
     def form_valid(self, form):
         form.save()
         return super().form_valid(form)
-    
+
 
 class PostCreateView(CreateView):
     model = Post
     # fields = ['author', 'title', 'content', 'status', 'category', 'published_date']
     form_class = PostForm
-    success_url = '/blog/post/'
+    success_url = "/blog/post/"
 
     def form_valid(self, form):
         form.instance.author = self.request.user
         return super().form_valid(form)
-    
+
 
 class PostEditView(UpdateView):
     model = Post
     form_class = PostForm
-    success_url = '/blog/post_list/'
+    success_url = "/blog/post_list/"
+
 
 class PostDeleteView(DeleteView):
     model = Post
-    success_url = '/blog/post_list/'
+    success_url = "/blog/post_list/"

@@ -17,6 +17,10 @@ drf-yasg[validation]
 django-mail-templated
 
 
-
+#Caching 
 djoser
 django-redis
+
+
+#refactoring
+black
