@@ -19,4 +19,6 @@ class TestPostForm(TestCase):
 
         self.assertTrue(form.is_valid())
 
-    
+    def test_post_form_with_no_data(self):
+        form = PostForm(data={})
+        self.assertFalse(form.is_valid())
