@@ -17,10 +17,9 @@ def test_redis(request):
     return JsonResponse(response.json())
 
 
-"""def indexView
-def indexView(request):
+
+def index(request):
     return render(request,'index.html')
-"""
 
 
 """TemplateView
