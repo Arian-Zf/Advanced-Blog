@@ -6,7 +6,6 @@ from accounts.models import User, Profile
 from datetime import datetime
 
 
-
 class TestBlogView(TestCase):
 
     def setUp(self):
@@ -33,3 +32,15 @@ class TestBlogView(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTrue(str(response.content).find("index"))
         self.assertTemplateUsed(response, template_name="index.html")
+
+    def test_blog_post_detail_logged_in_response(self):
+        self.client.force_login(self.user)
+        url = reverse('blog:post_list_detail', kwargs={'pk': self.post.id})
+        response = self.client.get(url)
+        self.assertEquals(response.status_code, 200)
+
+
+    def test_blog_post_detail_anonymous_response(self):
+        url = reverse('blog:post_list_detail', kwargs={'pk': self.post.id})
+        response = self.client.get(url)
+        self.assertEquals(response.status_code, 302)
