@@ -25,3 +25,7 @@ django-redis
 #refactoring
 black
 flake8
+
+#Test
+pytest
+pytest-django
