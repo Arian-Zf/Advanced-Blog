@@ -17,10 +17,9 @@ def test_redis(request):
     return JsonResponse(response.json())
 
 
-"""def indexView
-def indexView(request):
+
+def index(request):
     return render(request,'index.html')
-"""
 
 
 """TemplateView
@@ -59,7 +58,7 @@ class PostList(PermissionRequiredMixin, LoginRequiredMixin, ListView):
     #     return posts
 
 
-class PostListDetail(DetailView):
+class PostListDetail(LoginRequiredMixin,DetailView):
     model = Post
 
 

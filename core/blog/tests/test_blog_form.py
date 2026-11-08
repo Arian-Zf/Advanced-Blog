@@ -16,5 +16,9 @@
 #             "category": category_obj,
 #             "published_date": datetime.now()
 #         })
-#         print(form.errors.as_json())
+
 #         self.assertTrue(form.is_valid())
+
+#     def test_post_form_with_no_data(self):
+#         form = PostForm(data={})
+#         self.assertFalse(form.is_valid())
