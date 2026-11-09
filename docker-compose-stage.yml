@@ -34,9 +34,9 @@ volumes:
 
 
 nginx:
-  image: nginx:latest
+  image: nginx
   container_name: nginx
-  restart: unless-stopped
+  restart: always
   ports:
     - "80:80"
   depends_on:
