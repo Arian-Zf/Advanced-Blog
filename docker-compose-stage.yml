@@ -31,3 +31,13 @@ services:
 
 volumes:
   smtp4dev-data:
+
+
+nginx:
+  image: nginx:latest
+  container_name: nginx
+  restart: unless-stopped
+  ports:
+    - "80:80"
+  depends_on:
+    - backend
