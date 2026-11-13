@@ -28,16 +28,15 @@ services:
       - smtp4dev-data:/smtp4dev
     environment:
       - ServerOptions__HostName=smtp4dev
-
+  nginx:
+    image: nginx
+    container_name: nginx
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
 volumes:
   smtp4dev-data:
 
 
-nginx:
-  image: nginx
-  container_name: nginx
-  restart: always
-  ports:
-    - "80:80"
-  depends_on:
-    - backend
